@@ -1,0 +1,60 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "needleman-wunsch-alignment"
+authors = [{name = "Juan Carlos Gomez", email = "jugomez@student.ucsf.edu"}]
+readme = "README.md"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+description = "Implementation of the Needleman-Wunsch global pairwise sequence alignment algorithm using dynamic programming with linear gap penalties."
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.20.1",
+]
+version = "1.0.0"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=3.0",
+]
+dev = [
+    "pytest>=3.0",
+    "black",
+    "flake8",
+    "mypy",
+]
+
+[project.urls]
+Repository = "https://github.com/Juan-Carlos-Gomez/HW5-NW"
+Documentation = "https://github.com/Juan-Carlos-Gomez/HW5-NW/blob/main/README.md"
+
+[tool.flit.module]
+name = "align"
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311"]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
