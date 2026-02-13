@@ -68,11 +68,11 @@ print(f'seqA: {seqA_align}')
 print(f'seqB: {seqB_align}')
 print()
 print('Expected:')
-print(f'Score: 1')
+print(f'Score: 18')
 print(f'seqA: MAVHQLIRRP')
 print(f'seqB: M---QLIRHP')
 "
-```8
+```
 
 ```
 Alignment Score: 18
