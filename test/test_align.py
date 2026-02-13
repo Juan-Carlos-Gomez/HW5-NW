@@ -15,11 +15,8 @@ def test_nw_alignment():
     
     Uses BLOSUM62 matrix with gap_open=-10 and gap_extend=-1 (linear gap penalty).
     """
-    # Load test sequences
     seq1, _ = read_fasta("./data/test_seq1.fa")
     seq2, _ = read_fasta("./data/test_seq2.fa")
-    
-    # Create NeedlemanWunsch object
     nw = NeedlemanWunsch("./substitution_matrices/BLOSUM62.mat", gap_open=-10, gap_extend=-1)
     
     # Perform alignment

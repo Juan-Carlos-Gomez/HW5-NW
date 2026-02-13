@@ -33,22 +33,64 @@ This is essential for comparing DNA/protein sequences across different species t
 
 # Assignment Tasks
 
-## Core Implementation (4 points)
-- [ ] **`align/align.py` - `NeedlemanWunsch.align()` method**
+## 1. Core Implementation (4 points)
+- [x] **`align/align.py` - `NeedlemanWunsch.align()` method**
   - Initialize the alignment matrix (single matrix, NOT three separate matrices)
   - Implement the forward-pass dynamic programming algorithm with **LINEAR gap penalty**
   - Use the substitution matrix and gap penalty to calculate scores
   - Gap cost = gap_penalty × gap_length (e.g., if gap_open=-10, a 2-char gap costs -20)
   - Return the backtrace result
 
-- [ ] **`align/align.py` - `NeedlemanWunsch._backtrace()` method**
+- [x] **`align/align.py` - `NeedlemanWunsch._backtrace()` method**
   - Backtrace from the optimal endpoint through the matrix
   - Reconstruct the aligned sequence strings for both seqA and seqB
   - Set the alignment score attribute
   - Return tuple: (alignment_score, seqA_align, seqB_align)
 
-## Main Function (2 points)
-- [ ] **`main.py` - Complete `main()` function**
+
+
+```
+cd /Users/jugomez/Library/CloudStorage/Box-Box/Biological_and_Medical_Informatics/Biocomputing_Algorithms_\(BMI_203\)/Assignments/HW5-NW && python -c "
+from align import NeedlemanWunsch, read_fasta
+
+# Load test sequences
+seq3, _ = read_fasta('./data/test_seq3.fa')
+seq4, _ = read_fasta('./data/test_seq4.fa')
+
+# Create NW object with BLOSUM62 and linear gap penalty
+nw = NeedlemanWunsch('./substitution_matrices/BLOSUM62.mat', gap_open=-10, gap_extend=-1)
+
+# Align sequences
+score, seqA_align, seqB_align = nw.align(seq3, seq4)
+
+print(f'Alignment Score: {score}')
+print(f'seqA: {seqA_align}')
+print(f'seqB: {seqB_align}')
+print()
+print('Expected:')
+print(f'Score: 17')
+print(f'seqA: MAVHQLIRRP')
+print(f'seqB: M---QLIRHP')
+"
+```
+
+```
+Alignment Score: 0.0
+seqA: MAVHQLIRRP
+seqB: M---QLIRHP
+
+Expected:
+Score: 17
+seqA: MAVHQLIRRP
+seqB: M
+
+```
+
+
+
+
+## 2. Main Function (2 points)
+- [x] **`main.py` - Complete `main()` function**
   - Load all 5 species BRD2 sequences from the data folder
   - Align each species to the human BRD2 sequence using:
     - **Substitution matrix**: BLOSUM62
@@ -56,14 +98,28 @@ This is essential for comparing DNA/protein sequences across different species t
   - Print species ordered by alignment score (most similar to least similar)
   - Print the alignment scores for each species-to-human alignment
 
-## Unit Tests (3 points)
-- [ ] **`test/test_align.py` - `test_nw_alignment()` function**
+
+```
+cd /Users/jugomez/Library/CloudStorage/Box-Box/Biological_and_Medical_Informatics/Biocomputing_Algorithms_\(BMI_203\)/Assignments/HW5-NW && python main.py
+```
+
+* Dolphin is most evolutionarily similar to humans (mammals)
+
+* Mouse is also a mammal, so high similarity makes sense
+
+* Chicken (bird) has lower similarity than mammals
+
+* Shoebill (bird) has the lowest similarity among tested species
+
+
+## 3. Unit Tests (3 points)
+- [x] **`test/test_align.py` - `test_nw_alignment()` function**
   - Load test_seq1.fa and test_seq2.fa
   - Create a NeedlemanWunsch object with BLOSUM62, gap_open=-10
   - Call align() on these sequences
   - Assert that the alignment matrix is filled correctly
   
-- [ ] **`test/test_align.py` - `test_nw_backtrace()` function**
+- [x] **`test/test_align.py` - `test_nw_backtrace()` function**
   - Load test_seq3.fa and test_seq4.fa
   - Create a NeedlemanWunsch object with BLOSUM62, gap_open=-10
   - Call align() on these sequences
@@ -73,9 +129,43 @@ This is essential for comparing DNA/protein sequences across different species t
     - seqB alignment: `M---QLIRHP`
   - Assert that the alignments match these expected values
 
-- [ ] **Run all tests with pytest**
+- [x] **Run all tests with pytest**
   - Execute `pytest test/test_align.py` from the project root
   - Ensure all tests pass
+
+
+```
+cd /Users/jugomez/Library/CloudStorage/Box-Box/Biological_and_Medical_Informatics/Biocomputing_Algorithms_\(BMI_203\)/Assignments/HW5-NW && python -c "
+from align import NeedlemanWunsch, read_fasta
+import numpy as np
+
+# Test seq1 and seq2
+seq1, _ = read_fasta('./data/test_seq1.fa')
+seq2, _ = read_fasta('./data/test_seq2.fa')
+
+print(f'seq1: {seq1}')
+print(f'seq2: {seq2}')
+print()
+
+nw = NeedlemanWunsch('./substitution_matrices/BLOSUM62.mat', gap_open=-10, gap_extend=-1)
+score, seq1_align, seq2_align = nw.align(seq1, seq2)
+
+print(f'Alignment score: {score}')
+print(f'seq1 alignment: {seq1_align}')
+print(f'seq2 alignment: {seq2_align}')
+print()
+print('Alignment matrix shape:', nw._align_matrix.shape)
+print('Alignment matrix:')
+print(nw._align_matrix)
+"
+
+```
+
+```
+cd /Users/jugomez/Library/CloudStorage/Box-Box/Biological_and_Medical_Informatics/Biocomputing_Algorithms_\(BMI_203\)/Assignments/HW5-NW && "/Users/jugomez/Library/CloudStorage/Box-Box/Biological_and_Medical_Informatics/Biocomputing_Algorithms_(BMI_203)/Assignments/HW5-NW/.venv/bin/python" -m pytest test/test_align.py -v
+```
+
+
 
 ## Package Setup (1 point)
 - [ ] **Create `pyproject.toml` configuration file**
@@ -119,3 +209,28 @@ Make sure to push all your code to Github, ensure that your unit tests are corre
 * Readable code with clear comments and method descriptions (1)
 ## Extra credit (0.5)
 * Github actions/workflow (0.5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
