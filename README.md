@@ -1,5 +1,6 @@
 # HW5: Needleman-Wunsch Global Sequence Alignment
 
+For HW5, please ignore the references to an affine gap penalty in the assignment. Implement the NW algorithm with a linear gap penalty. If you’ve already implemented the affine penalty version we’ll give a little EC for it. We will update the test case score. Sorry for this oversight.
 
 ## Assignment Overview
 The purpose of this assigment is to have you implement the Needleman-Wunsch global pairwise sequence alignment algorithm (dynamic programming).
@@ -12,16 +13,20 @@ The **Needleman-Wunsch algorithm** is a classic dynamic programming algorithm us
 ### Key Features:
 1. **Global Alignment**: Aligns entire sequences from start to finish
 2. **Dynamic Programming**: Builds up solutions from smaller subproblems
-3. **Gap Penalties**: Uses opening and extension penalties to penalize gap creation and extension
+3. **Linear Gap Penalty**: Uses a single penalty for any gap (no distinction between opening and extending)
 4. **Substitution Matrix**: Uses scoring matrices (like BLOSUM62) to score residue matches/mismatches
 
 ### Algorithm Overview:
-1. **Initialize three matrices** to track alignment scores:
-   - **Alignment matrix**: Scores for matching residues
-   - **GapA matrix**: Scores tracking gaps in sequence A
-   - **GapB matrix**: Scores tracking gaps in sequence B
-2. **Fill matrices forward** using recurrence relations with gap penalties
+1. **Initialize alignment matrix** to track alignment scores:
+   - **Alignment matrix**: Scores for matching residues and gaps combined
+2. **Fill matrix forward** using recurrence relations with linear gap penalty (gap_cost = gap_penalty × gap_length)
 3. **Backtrace** from the optimal endpoint to reconstruct the actual alignment strings
+
+### Important Note on Gap Penalty:
+ **Use LINEAR gap penalty** (not affine). This means:
+- Any gap of length *n* costs: `n × gap_penalty`
+- Do NOT distinguish between gap opening and gap extension
+- The `gap_extend` parameter in the class is ignored for linear penalty implementation
 
 ### Practical Use:
 This is essential for comparing DNA/protein sequences across different species to measure evolutionary similarity and relationships.
@@ -30,13 +35,14 @@ This is essential for comparing DNA/protein sequences across different species t
 
 ## Core Implementation (4 points)
 - [ ] **`align/align.py` - `NeedlemanWunsch.align()` method**
-  - Initialize the three matrices: alignment matrix, gapA matrix, and gapB matrix
-  - Implement the forward-pass dynamic programming algorithm to fill these matrices
-  - Use the substitution matrix and gap penalties (open/extend) to calculate scores
+  - Initialize the alignment matrix (single matrix, NOT three separate matrices)
+  - Implement the forward-pass dynamic programming algorithm with **LINEAR gap penalty**
+  - Use the substitution matrix and gap penalty to calculate scores
+  - Gap cost = gap_penalty × gap_length (e.g., if gap_open=-10, a 2-char gap costs -20)
   - Return the backtrace result
 
 - [ ] **`align/align.py` - `NeedlemanWunsch._backtrace()` method**
-  - Backtrace from the optimal endpoint through the matrices
+  - Backtrace from the optimal endpoint through the matrix
   - Reconstruct the aligned sequence strings for both seqA and seqB
   - Set the alignment score attribute
   - Return tuple: (alignment_score, seqA_align, seqB_align)
@@ -46,21 +52,20 @@ This is essential for comparing DNA/protein sequences across different species t
   - Load all 5 species BRD2 sequences from the data folder
   - Align each species to the human BRD2 sequence using:
     - **Substitution matrix**: BLOSUM62
-    - **Gap opening penalty**: -10
-    - **Gap extension penalty**: -1
+    - **Gap penalty**: -10 (linear - use only the gap_open parameter)
   - Print species ordered by alignment score (most similar to least similar)
   - Print the alignment scores for each species-to-human alignment
 
 ## Unit Tests (3 points)
 - [ ] **`test/test_align.py` - `test_nw_alignment()` function**
   - Load test_seq1.fa and test_seq2.fa
-  - Create a NeedlemanWunsch object with BLOSUM62, gap_open=-10, gap_extend=-1
+  - Create a NeedlemanWunsch object with BLOSUM62, gap_open=-10
   - Call align() on these sequences
-  - Assert that the three matrices are filled correctly
+  - Assert that the alignment matrix is filled correctly
   
 - [ ] **`test/test_align.py` - `test_nw_backtrace()` function**
   - Load test_seq3.fa and test_seq4.fa
-  - Create a NeedlemanWunsch object with BLOSUM62, gap_open=-10, gap_extend=-1
+  - Create a NeedlemanWunsch object with BLOSUM62, gap_open=-10
   - Call align() on these sequences
   - **Expected results:**
     - Alignment score: **17**
