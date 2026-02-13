@@ -28,7 +28,7 @@ def main():
     ]
     
     # Create NeedlemanWunsch object with BLOSUM62 and linear gap penalty
-    nw = NeedlemanWunsch("./substitution_matrices/BLOSUM62.mat", gap_open=-10, gap_extend=-1)
+    nw = NeedlemanWunsch("./substitution_matrices/BLOSUM62.mat", gap_open=-4, gap_extend=-4)
     
     # Align each species to human and store results
     alignment_results = []

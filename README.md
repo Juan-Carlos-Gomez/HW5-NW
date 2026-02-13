@@ -58,7 +58,7 @@ seq3, _ = read_fasta('./data/test_seq3.fa')
 seq4, _ = read_fasta('./data/test_seq4.fa')
 
 # Create NW object with BLOSUM62 and linear gap penalty
-nw = NeedlemanWunsch('./substitution_matrices/BLOSUM62.mat', gap_open=-10, gap_extend=-1)
+nw = NeedlemanWunsch('./substitution_matrices/BLOSUM62.mat', gap_open=-4, gap_extend=-1)
 
 # Align sequences
 score, seqA_align, seqB_align = nw.align(seq3, seq4)
@@ -68,26 +68,38 @@ print(f'seqA: {seqA_align}')
 print(f'seqB: {seqB_align}')
 print()
 print('Expected:')
-print(f'Score: 17')
+print(f'Score: 1')
 print(f'seqA: MAVHQLIRRP')
 print(f'seqB: M---QLIRHP')
 "
-```
+```8
 
 ```
-Alignment Score: 0.0
+Alignment Score: 18
 seqA: MAVHQLIRRP
 seqB: M---QLIRHP
 
 Expected:
-Score: 17
+Score: 18
 seqA: MAVHQLIRRP
 seqB: M
 
 ```
 
-
-
+```
+M-M:     +5
+A-gap:  -10
+V-gap:  -10
+H-gap:  -10
+Q-Q:     +5
+L-L:     +4
+I-I:     +4
+R-R:     +5
+R-H:      0
+P-P:     +7
+───────────
+Total:    0
+```
 
 ## 2. Main Function (2 points)
 - [x] **`main.py` - Complete `main()` function**
